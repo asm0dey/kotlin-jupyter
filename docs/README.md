@@ -562,6 +562,7 @@ Here you can find all the supported libraries you can use in you Kotlin notebook
  - [kraphviz](https://github.com/nidi3/graphviz-java) - Graphviz wrapper for JVM
  - [kravis](https://github.com/holgerbrandl/kravis) - Kotlin grammar for data visualization
  - [ksl](https://github.com/rossetti/KSL) - KSL - Kotlin Simulation Library for Monte Carlo and Discrete-Event Simulation
+ - [kstats](https://github.com/oremif/kstats) - Kotlin Multiplatform statistics library
  - [kt-math](https://github.com/gciatto/kt-math) - Kotlin multi-platform port of java.math.*
  - [ktor-client](https://github.com/Kotlin/kotlin-notebook-integrations/tree/master/integrations/http-util) - Asynchronous HTTP client
  - [langchain4j](https://github.com/langchain4j/langchain4j) - LangChain is a framework for building applications powered by LLMs, enabling easy integration of models, data, and external tools
