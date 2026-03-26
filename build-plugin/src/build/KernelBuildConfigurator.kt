@@ -95,11 +95,14 @@ internal class KernelBuildConfigurator(private val project: Project) {
     private fun setupKtLintForAllProjects() {
         val ktlintVersion = project.defaultVersionCatalog.versions.ktlint
         project.allprojects {
-            plugins.apply("org.jlleitschuh.gradle.ktlint")
-            // Changes here should also be reflected in the root `build.gradle.kts`
-            extensions.configure<KtlintExtension> {
-                version.set(ktlintVersion)
-                enableExperimentalRules.set(true)
+            // See https://youtrack.jetbrains.com/issue/KTNB-1435/Ktlint-and-Kapt-are-not-working-correctly-in-Kotlin-2.4
+            if (this.name != "spring-starter") {
+                plugins.apply("org.jlleitschuh.gradle.ktlint")
+                // Changes here should also be reflected in the root `build.gradle.kts`
+                extensions.configure<KtlintExtension> {
+                    version.set(ktlintVersion)
+                    enableExperimentalRules.set(true)
+                }
             }
         }
     }
