@@ -169,6 +169,14 @@ buildSettings {
     }
     withTests {
         val doParallelTesting = getFlag("test.parallel", true)
+        // Re-use top-level Gradle JVM args for tests
+        val gradleJvmArgs =
+            providers
+                .gradleProperty("org.gradle.jvmargs")
+                .getOrNull()
+                ?.split(" ")
+                ?: emptyList()
+        jvmArgs(gradleJvmArgs)
 
         /**
          *  Set to true to debug classpath/shadowing issues, see testKlaxonClasspathDoesntLeak test

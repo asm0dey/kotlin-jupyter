@@ -1080,7 +1080,7 @@ abstract class ExecuteTests(
     fun testPropertyAnnotations() {
         val code =
             """
-            val test
+            val test: String
                 @JvmName("customGetter")
                 get() = "Hello"
             test

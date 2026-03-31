@@ -333,11 +333,7 @@ class CustomLibraryResolverTests : AbstractReplTest() {
         )
 
         val res = replWithTracker.execute("annotatedClasses")
-
-        when (repl.compilerMode) {
-            ReplCompilerMode.K1 -> res.result.value shouldBe listOf("A", "B", "C", "E")
-            ReplCompilerMode.K2 -> res.result.value shouldBe listOf("A", "B")
-        }
+        res.result.value shouldBe listOf("A", "B", "C", "E")
     }
 
     @Test

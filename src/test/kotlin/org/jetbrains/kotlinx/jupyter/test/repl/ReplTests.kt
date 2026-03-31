@@ -993,7 +993,7 @@ class ReplTests : AbstractSingleReplTest() {
             eval(
                 """
                 class Foo() { }
-                val Foo.bar
+                val Foo.bar: String
                     get() = "Hello"
                 Foo().bar
                 """.trimIndent(),
