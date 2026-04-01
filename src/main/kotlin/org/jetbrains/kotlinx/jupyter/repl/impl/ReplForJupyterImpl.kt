@@ -737,6 +737,7 @@ class ReplForJupyterImpl(
     }
 
     override fun close() {
+        jupyterCompiler.close()
         notebook.closeIfPossible()
     }
 }

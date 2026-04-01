@@ -60,4 +60,8 @@ internal class K1JupyterCompilerWithCompletionImpl(
 
         return result[ReplAnalyzerResult.Companion.analysisDiagnostics]!!
     }
+
+    override fun close() {
+        // Do nothing
+    }
 }

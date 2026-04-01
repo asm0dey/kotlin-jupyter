@@ -6,6 +6,7 @@ import org.jetbrains.kotlinx.jupyter.repl.CheckCompletenessResult
 import org.jetbrains.kotlinx.jupyter.repl.impl.k1.K1JupyterCompilerWithCompletionImpl
 import org.jetbrains.kotlinx.jupyter.repl.impl.k2.K2JupyterCompilerWithCompletionImpl
 import org.jetbrains.kotlinx.jupyter.repl.impl.k2.K2KJvmReplCompilerWithCompletion
+import java.io.Closeable
 import kotlin.script.experimental.api.ReplCompleter
 import kotlin.script.experimental.api.ScriptCompilationConfiguration
 import kotlin.script.experimental.api.ScriptDiagnostic
@@ -13,7 +14,9 @@ import kotlin.script.experimental.api.ScriptEvaluationConfiguration
 import kotlin.script.experimental.api.hostConfiguration
 import kotlin.script.experimental.jvm.defaultJvmScriptingHostConfiguration
 
-internal interface JupyterCompilerWithCompletion : JupyterCompiler {
+internal interface JupyterCompilerWithCompletion :
+    JupyterCompiler,
+    Closeable {
     val completer: ReplCompleter
 
     fun checkComplete(code: Code): CheckCompletenessResult

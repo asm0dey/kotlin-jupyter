@@ -32,28 +32,33 @@ class CapturingStreamTests {
 
     @Test
     fun testMaxOutputSizeOk() {
-        val s = getStream(maxOutputSize = 6)
-        s.write("kotlin".toByteArray())
+        getStream(maxOutputSize = 6).use { s ->
+            s.write("kotlin".toByteArray())
+            s.contents shouldBe "kotlin".toByteArray()
+        }
     }
 
     @Test
     fun testMaxOutputSizeError() {
-        val s = getStream(maxOutputSize = 3)
-        s.write("java".toByteArray())
-        s.contents shouldBe "jav".toByteArray()
+        getStream(maxOutputSize = 3).use { s ->
+            s.write("java".toByteArray())
+            s.contents shouldBe "jav".toByteArray()
+        }
     }
 
     @Test
     fun testOutputCapturingFlag() {
         val contents = "abc".toByteArray()
 
-        val s1 = getStream(captureOutput = false)
-        s1.write(contents)
-        s1.contents.size shouldBe 0
+        getStream(captureOutput = false).use { s1 ->
+            s1.write(contents)
+            s1.contents.size shouldBe 0
+        }
 
-        val s2 = getStream(captureOutput = true)
-        s2.write(contents)
-        s2.contents shouldBe contents
+        getStream(captureOutput = true).use { s2 ->
+            s2.write(contents)
+            s2.contents shouldBe contents
+        }
     }
 
     @Test
@@ -62,13 +67,12 @@ class CapturingStreamTests {
         val expected = arrayOf("012", "345", "678", "9\n", "for", "tra", "n")
 
         val i = AtomicInteger()
-        val s =
-            getStream(maxBufferSize = 3) {
-                it shouldBe expected[i.getAndIncrement()]
-            }
-
-        s.write(contents)
-        s.flush()
+        getStream(maxBufferSize = 3) {
+            it shouldBe expected[i.getAndIncrement()]
+        }.use { s ->
+            s.write(contents)
+            s.flush()
+        }
 
         i.get() shouldBe expected.size
     }
@@ -79,13 +83,12 @@ class CapturingStreamTests {
         val expected = arrayOf("12345\n", "12\n", "345123456", "7890")
 
         val i = AtomicInteger()
-        val s =
-            getStream(maxBufferSize = 9, maxBufferNewlineSize = 6) {
-                it shouldBe expected[i.getAndIncrement()]
-            }
-
-        s.write(contents)
-        s.flush()
+        getStream(maxBufferSize = 9, maxBufferNewlineSize = 6) {
+            it shouldBe expected[i.getAndIncrement()]
+        }.use { s ->
+            s.write(contents)
+            s.flush()
+        }
 
         i.get() shouldBe expected.size
     }
@@ -98,21 +101,19 @@ class CapturingStreamTests {
 
         val timeDelta = 2000L
         var i = 0
-        val s =
-            getStream(maxBufferLifeTimeMs = 2 * timeDelta) {
-                synchronized(this) {
-                    it shouldBe expected[i++]
-                }
+        getStream(maxBufferLifeTimeMs = 2 * timeDelta) {
+            synchronized(this) {
+                it shouldBe expected[i++]
+            }
+        }.use { s ->
+            Thread.sleep(timeDelta / 2)
+            strings.forEach {
+                s.write(it.toByteArray())
+                Thread.sleep(timeDelta)
             }
 
-        Thread.sleep(timeDelta / 2)
-        strings.forEach {
-            s.write(it.toByteArray())
-            Thread.sleep(timeDelta)
+            s.flush()
         }
-
-        s.flush()
-        s.close()
 
         i shouldBe expected.size
     }

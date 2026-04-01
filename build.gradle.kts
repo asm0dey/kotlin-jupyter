@@ -168,7 +168,12 @@ buildSettings {
         jdkRelease(rootSettings.jvmTarget)
     }
     withTests {
-        val doParallelTesting = getFlag("test.parallel", true)
+        // Parallel testing has minimal impact on the run-time of a full test-suite. Due to
+        // most of the heavy tests running with `@Execution(ExecutionMode.SAME_THREAD)`. At
+        // the same time, it increases the chance for OOM to happen due to starting too many
+        // kernels at the same time. For this reason, we have disabled it by default but
+        // still make it easy to enable, in case we want to experiment with it in the future.
+        val doParallelTesting = getFlag("test.parallel", false)
         // Re-use top-level Gradle JVM args for tests
         val gradleJvmArgs =
             providers

@@ -59,4 +59,8 @@ internal class K2JupyterCompilerWithCompletionImpl(
 
         return result[ReplAnalyzerResult.analysisDiagnostics]!!
     }
+
+    override fun close() {
+        compiler.close()
+    }
 }

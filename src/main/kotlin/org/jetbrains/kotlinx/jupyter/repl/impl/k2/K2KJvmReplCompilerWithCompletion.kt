@@ -49,10 +49,10 @@ class K2KJvmReplCompilerWithCompletion(
     ReplCodeAnalyzer {
     private val state: K2ReplCompilationState
     private val compiler: K2ReplCompiler
+    private val rootDisposable = Disposer.newDisposable("K2KJvmReplCompilerWithCompletion rootDisposable")
 
     init {
         val messageCollector = ScriptDiagnosticsMessageCollector(parentMessageCollector = null) // ReplMessageCollector()
-        val rootDisposable = Disposer.newDisposable("K2KJvmReplCompilerWithCompletion rootDisposable")
         state =
             K2ReplCompiler.createCompilationState(
                 messageCollector,
@@ -102,6 +102,10 @@ class K2KJvmReplCompilerWithCompletion(
         // TODO KTNB-916
         //  Until KTNB-916 is implemented, we just return empty analysis results here.
         return ReplAnalyzerResult {}.asSuccess()
+    }
+
+    fun close() {
+        Disposer.dispose(rootDisposable)
     }
 }
 
